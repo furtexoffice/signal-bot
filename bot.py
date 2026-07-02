@@ -60,7 +60,7 @@ def home():
 @app.route("/webhook", methods=["POST"])
 def webhook():
     update = Update.de_json(request.get_json(force=True), bot)
-    dispatcher.process_update(update)
+    application.process_update(update)
     return "ok"
 
 # ---------------- RUN ---------------- #
