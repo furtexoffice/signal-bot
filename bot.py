@@ -1,8 +1,7 @@
 import os
 from flask import Flask, request
 from telegram import Bot, Update
-from telegram.ext import Dispatcher, CommandHandler
-
+from telegram.ext import Application, CommandHandler
 # Secure token (from Render environment variable)
 TOKEN = os.environ.get("BOT_TOKEN")
 
@@ -47,12 +46,11 @@ def set_timeframe(update, context):
 
 # ---------------- DISPATCHER ---------------- #
 
-dispatcher = Dispatcher(bot, None, workers=0)
+application = Application.builder().token(TOKEN).build()
 
-dispatcher.add_handler(CommandHandler("start", start))
-dispatcher.add_handler(CommandHandler("status", status))
-dispatcher.add_handler(CommandHandler("timeframe", set_timeframe))
-
+application.add_handler(CommandHandler("start", start))
+application.add_handler(CommandHandler("status", status))
+application.add_handler(CommandHandler("timeframe", set_timeframe))
 # ---------------- FLASK ROUTES ---------------- #
 
 @app.route("/")
